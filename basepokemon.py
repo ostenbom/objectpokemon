@@ -19,7 +19,7 @@ class BasePokemon:
         self.hp = BASE_HP
         self.attack_points = 0
         self.defence_points = 0
-        self.__attacks = {}
+        self.__moves = {}
         self.type = Type.NORMAL
 
     def get_name(self):
@@ -32,11 +32,14 @@ class BasePokemon:
         check = Type[poke_type.name]
         self.type = check
 
-    def set_attack(self, attack):
-        self.__attacks[attack.get_name()] = attack
+    def add_move(self, move):
+        if len(self.__moves) >= 4:
+            print("no more than 4 moves allowed")
+            return
+        self.__moves[move.get_name()] = move
 
-    def get_attack_by_name(self, name):
-        return self.__attacks[name]
+    def get_move_by_name(self, name):
+        return self.__moves[name]
 
     def spend_hp(self, hp):
         if self.__spendpoints - hp < 0:
@@ -62,20 +65,19 @@ class BasePokemon:
         self.__spendpoints -= defence
         self.defence_points += defence
 
-    def inflict(self, attack, enemy):
+    def inflict(self, move, enemy):
         if random.randint(0, 4) == 4:
             print("Oh no", enemy.get_name(), "missed")
             return 0
 
         if random.randint(1, 100) < self.defence_points / 2:
-            print(self.get_name(), "managed to dodge the attack")
+            print(self.get_name(), "managed to dodge the move")
             return 0
 
-        attack_damage = attack.use()
+        move_damage = move.use()
         pokemon_type_multiplier = self.__get_multiplier(enemy.type, self.type)
-        attack_multiplier = self.__get_multiplier(attack.type, self.type)
-        print("poke mult", pokemon_type_multiplier, "attack mult", attack_multiplier)
-        damage = (attack_multiplier * attack_damage) + (pokemon_type_multiplier * enemy.attack_points)
+        move_multiplier = self.__get_multiplier(move.type, self.type)
+        damage = (move_multiplier * move_damage) + (pokemon_type_multiplier * enemy.attack_points)
         inflict_points = damage if damage > 0 else 0
         self.hp -= inflict_points
 
@@ -85,7 +87,7 @@ class BasePokemon:
         return multiplier_table[attacking_type][defending_type]
 
 
-class BaseAttack:
+class BaseMove:
     def __init__(self):
         self.max_uses = 0
         self.uses = 0
@@ -110,7 +112,7 @@ class BaseAttack:
     def use(self):
         if self.uses >= self.max_uses:
             print("out of uses")
-            return
+            return 0
 
         self.uses += 1
         return self.attack
@@ -136,9 +138,9 @@ multiplier_table = {
                     Type.NORMAL: 1
                 },
             Type.NORMAL: {
-                    Type.WATER: 0.8,
-                    Type.FIRE: 0.8,
-                    Type.EARTH: 0.8,
-                    Type.NORMAL: 0.8
+                    Type.WATER: 0.75,
+                    Type.FIRE: 0.75,
+                    Type.EARTH: 0.75,
+                    Type.NORMAL: 1
                 },
         }

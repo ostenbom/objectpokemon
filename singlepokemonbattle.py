@@ -22,9 +22,9 @@ def simulate_battle(poke1, poke2):
     print("Pokemon", attacking_poke.get_name(), "gets to start")
 
     while pokemon_alive(poke1, poke2):
-        attack = attacking_poke.choose_attack(defending_poke)
-        print(attacking_poke.get_name(), "chooses", attack.get_name())
-        inflicted = defending_poke.inflict(attack, attacking_poke)
+        move = attacking_poke.choose_move(defending_poke)
+        print(attacking_poke.get_name(), "chooses", move.get_name())
+        inflicted = defending_poke.inflict(move, attacking_poke)
         print(attacking_poke.get_name(), "inflicts", inflicted, "damage on", defending_poke.get_name())
 
         attacking_poke, defending_poke = defending_poke, attacking_poke

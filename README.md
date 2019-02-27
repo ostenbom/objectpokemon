@@ -9,6 +9,7 @@ This is an exercise in creating python objects aimed at those with a small amoun
 - A pokemon with 0 HP is dead
 - Defence increases your chance of dodging an attack, up to 50%
 - Attack is your base damage inflicted on each move
+- No more than 4 move types allowed
 - Your type of pokemon / attack will decide your *multiplier* according to the following table
 
 | Attack\Defend | Water | Fire | Earth | Normal |
@@ -19,6 +20,37 @@ This is an exercise in creating python objects aimed at those with a small amoun
 | Normal        | 0.75  | 0.75 | 0.75  | 1      |
 
 ### Make your pokemon
+- Extend the `BasePokemon` and `BaseMove` classes and implement your Pokemon
+
+```
+from basepokemon import BasePokemon, BaseMove, Type
+
+class Pokemon(BasePokemon):
+    def __init__(self):
+        BasePokemon.__init__(self)
+        # Has to sum to 100
+        self.spend_hp(50)
+        self.spend_attack(25)
+        self.spend_defence(25)
+        self.add_move(Burn())
+
+        self.set_type(Type.FIRE)
+
+    def get_name(self):
+        return "Charmander"
+
+    def choose_move(self, enemy):
+        return self.get_move_by_name("Burn")
+
+class Burn(BaseMove):
+    def __init__(self):
+        BaseMove.__init__(self)
+        self.choose_uses(5)
+        self.set_type(Type.FIRE)
+
+    def get_name(self):
+        return "Burn"
+```
 
 ### Usage
 
