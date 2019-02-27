@@ -24,7 +24,7 @@ def simulate_battle(poke1, poke2):
     while pokemon_alive(poke1, poke2):
         attack = attacking_poke.choose_attack()
         print(attacking_poke.get_name(), "chooses", attack.get_name())
-        inflicted = defending_poke.inflict(attack, attacking_poke.get_attack_points())
+        inflicted = defending_poke.inflict(attack, attacking_poke)
         print(attacking_poke.get_name(), "inflicts", inflicted, "damage on", defending_poke.get_name())
 
         attacking_poke, defending_poke = defending_poke, attacking_poke
@@ -34,7 +34,7 @@ def simulate_battle(poke1, poke2):
     else:
         winner = defending_poke
 
-    print("The winner is", winner.get_name(), "with", winner.get_hp(), "HP left")
+    print("The winner is", winner.get_name(), "with", winner.hp, "HP left")
 
 
 if __name__ == "__main__":
