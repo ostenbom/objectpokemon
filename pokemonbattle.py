@@ -1,12 +1,14 @@
 import sys
 import importlib.util
 import random
+# from importlib.machinery import SourceFileLoader
 
 def load_pokemon_from_file(filepath):
     spec = importlib.util.spec_from_file_location("", filepath)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
 
+    # return SourceFileLoader("", filepath).load_module()
     return module
 
 def pokemon_alive(poke1, poke2):
