@@ -1,5 +1,7 @@
 from enum import Enum
+import random
 
+BASE_HP = 100
 MAX_POKE_SPEND = 100
 MAX_ATTACK_SPEND = 150
 
@@ -14,7 +16,7 @@ class Type(Enum):
 class BasePokemon:
     def __init__(self):
         self.__spendpoints = MAX_POKE_SPEND
-        self.hp = 0
+        self.hp = BASE_HP
         self.attack_points = 0
         self.defence_points = 0
         self.__attacks = {}
@@ -33,7 +35,7 @@ class BasePokemon:
     def set_attack(self, attack):
         self.__attacks[attack.get_name()] = attack
 
-    def get_attack(self, name):
+    def get_attack_by_name(self, name):
         return self.__attacks[name]
 
     def spend_hp(self, hp):
@@ -61,10 +63,19 @@ class BasePokemon:
         self.defence_points += defence
 
     def inflict(self, attack, enemy):
+        if random.randint(0, 4) == 4:
+            print("Oh no", enemy.get_name(), "missed")
+            return 0
+
+        if random.randint(1, 100) < self.defence_points / 2:
+            print(self.get_name(), "managed to dodge the attack")
+            return 0
+
         attack_damage = attack.use()
         pokemon_type_multiplier = self.__get_multiplier(enemy.type, self.type)
         attack_multiplier = self.__get_multiplier(attack.type, self.type)
-        damage = (attack_multiplier * attack_damage) + (pokemon_type_multiplier * enemy.attack_points) - self.defence_points
+        print("poke mult", pokemon_type_multiplier, "attack mult", attack_multiplier)
+        damage = (attack_multiplier * attack_damage) + (pokemon_type_multiplier * enemy.attack_points)
         inflict_points = damage if damage > 0 else 0
         self.hp -= inflict_points
 
@@ -125,9 +136,9 @@ multiplier_table = {
                     Type.NORMAL: 1
                 },
             Type.NORMAL: {
-                    Type.WATER: 1,
-                    Type.FIRE: 1,
-                    Type.EARTH: 1,
-                    Type.NORMAL: 1
+                    Type.WATER: 0.8,
+                    Type.FIRE: 0.8,
+                    Type.EARTH: 0.8,
+                    Type.NORMAL: 0.8
                 },
         }
