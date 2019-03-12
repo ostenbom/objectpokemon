@@ -12,7 +12,7 @@ class Pokemon(BasePokemon):
         self.add_move(ToTAL_CARNAGE())
         self.add_move(Chunk())
         self.move = 0
-        self.moves = ['Burn', "LargeSMile ;) <:^)~", "Chew my ass!", "get CHUNKED!"]
+        self.moves = ['Burn', "LargeSMile ;) <:^)~", "Chew me!", "get CHUNKED!"]
 
 
     def get_name(self):
